@@ -55,6 +55,38 @@ This project analyzes environmental complaint data from the City of Chicago usin
 
 ---
 
+```mermaid
+flowchart TD
+    A[(Chicago Data Portal)] --> B[🧹 Data Cleaning<br>Format, filter, normalize]
+    B --> C[📤 Store in HDFS<br>Upload cleaned CSV]
+
+    %% Section 1: Hadoop MapReduce
+    C --> D1[🧮 Count Complaints per Year<br>Detect volume trend over time]
+    C --> D2[🧮 Identify Top Complaint Types<br>Find most reported issues]
+    C --> D4[🧮 Classify Resolved/Unresolved<br>Evaluate service responsiveness]
+    C --> D7[🧮 Track Complaint Type Trends<br>Type-wise yearly evolution]
+
+    %% Section 2: Apache Spark Jobs (In-memory)
+    C --> E1[⚡ Fast Yearly Aggregation<br>Reimplementation of Job 1]
+    C --> E2[⚡ Fast Top Types Analysis<br>Reimplementation of Job 2]
+    C --> E4[⚡ Fast Resolution Analysis<br>Reimplementation of Job 4]
+    C --> E7[⚡ Fast Complaint Trend Analysis<br>Reimplementation of Job 7]
+
+    %% Section 3: HBase Insert
+    E1 --> F1[🗃️ Insert Yearly Counts<br>RowKey: year#YYYY]
+    E2 --> F2[🗃️ Insert Complaint Types<br>RowKey: type#name]
+    E4 --> F4[🗃️ Insert Status Breakdown<br>RowKey: status#Resolved/Unresolved]
+    E7 --> F7[🗃️ Insert Yearly Type Trends<br>RowKey: trend#year#type]
+
+    %% Section 3b: Visualization
+    F1 --> G[📊 Chart Generator<br>Java CLI using JFreeChart]
+    F2 --> G
+    F4 --> G
+    F7 --> G
+```
+
+---
+
 ## 🖼️ Sample Charts
 
 | Chart | Description |
